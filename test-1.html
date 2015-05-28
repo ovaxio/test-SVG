@@ -1,0 +1,99 @@
+<html>
+<head>
+  <link href="http://fonts.googleapis.com/css?family=Racing+Sans+One" rel="stylesheet" type="text/css">
+  <style type="text/css">
+    body {
+      background: rgb(206,220,231);
+      background: -moz-linear-gradient(-45deg,  rgba(206,220,231,1) 0%, rgba(89,106,114,1) 100%);
+      background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,rgba(206,220,231,1)), color-stop(100%,rgba(89,106,114,1)));
+      background: -webkit-linear-gradient(-45deg,  rgba(206,220,231,1) 0%,rgba(89,106,114,1) 100%);
+      background: -o-linear-gradient(-45deg,  rgba(206,220,231,1) 0%,rgba(89,106,114,1) 100%);
+      background: -ms-linear-gradient(-45deg,  rgba(206,220,231,1) 0%,rgba(89,106,114,1) 100%);
+      background: linear-gradient(135deg,  rgba(206,220,231,1) 0%,rgba(89,106,114,1) 100%);
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cedce7', endColorstr='#596a72',GradientType=1 );
+    }
+
+    svg {
+      display: block;
+      position: relative;
+      min-width: 460px;
+      width: 70%;
+      height: 70%;
+      top: 50%;
+      transform: translateY(-50%);
+      -webkit-transform: translateY(-50%);
+      margin: 0 auto;
+      overflow: hidden;
+      background-size: cover;
+    }
+
+    .filtered {
+      filter: url(#dropshadow);
+      -webkit-filter: url(#dropshadow);
+      color: white;
+      font-family: 'Racing Sans One', cursive;
+      fill: #36434D;
+      font-size: 140px;
+    }
+  </style>
+</head>
+  <body>
+    <svg version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 600 300" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <filter id="myfilter">
+          <!-- COLORS -->
+          <feFlood flood-color="#112A3D" result="COLOR-red" />
+          <feFlood flood-color="#ff55ff" result="COLOR-blue" />
+
+          <!-- STROKE 1 -->
+          <feMorphology operator="dilate" radius="1" in="SourceAlpha" result="STROKE_1" />
+          <feConvolveMatrix order="3,3" divisor="1" kernelMatrix="0 0 0 0 1 0 0 0 1" in="STROKE_1" result="BEVEL_1" />
+
+          <!-- MOVE -->
+          <feOffset dx="4" dy="4" in="BEVEL_1" result="OFFSET_1"/>
+
+          <!-- COMPOSE -->
+          <feComposite operator="out" in="OFFSET_1" in2="BEVEL_1" result="COMPOSE_1"/>
+
+          <!-- PUT COLORS -->
+          <feComposite in="COLOR-red" in2="COMPOSE_1" operator="in" result="COMPOSE_2" />
+
+          <!-- LIGHT -->
+          <!-- MERGE -->
+          <feMerge result="FINAL_1">
+            <feMergeNode in="COMPOSE_2" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+
+          <feSpecularLighting specularExponent="1" lighting-color="#F3F4F3" result="light">
+            <fePointLight x="30" y="100" z="100"/>
+          </feSpecularLighting>
+          <feComposite in="light" in2="FINAL_1" operator="in" result="lit"/>
+        </filter>
+
+        <filter id="dropshadow" >
+          <feSpecularLighting specularExponent="5" lighting-color="#F3F4F3" result="light">
+              <fePointLight x="400" y="50" z="100"/>
+          </feSpecularLighting>
+          <!-- Apply lighting -->
+          <feComposite in="light" in2="SourceAlpha" operator="in" result="lit"/>
+
+          <feMorphology operator="dilate" radius="1" in="SourceAlpha" result="STROKE_1" />
+          <feConvolveMatrix order="3,3" divisor="1" kernelMatrix="0 0 0 0 1 0 0 0 1" in="STROKE_1" result="BEVEL_1" />
+          <feGaussianBlur in="BEVEL_1" stdDeviation="1" result="blur" />
+          <feOffset dx="-5" dy="2" in="blur" result="offset" />
+
+          <!-- Apply blur outside rectangle -->
+          <feComposite in="offset" in2="SourceAlpha" operator="out" result="shadow"/>
+
+          <!-- Combine lighting and shadow -->
+          <feComposite in="shadow" in2="lit" operator="xor" />
+      </filter>
+      </defs>
+
+      <g class="filtered">
+        <text x="0" y="200" transform="rotate(-12)">Petrol</text>
+      </g>
+    </svg>
+  </body>
+</html>
